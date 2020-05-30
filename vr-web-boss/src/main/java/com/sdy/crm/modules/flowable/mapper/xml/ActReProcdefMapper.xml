@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sdy.crm.modules.flowable.mapper.ActReProcdefMapper">
+    <!--查看流程管理信息-->
+    <select id="getProcess" resultType="com.sdy.crm.modules.flowable.model.ProcessModel">
+        select
+        a.id_ as id,
+        a.suspension_state_ as status,
+        a.version_,
+        a.name_,
+        a.key_,
+        b.bytes_ as xmlstring,
+        a.DESCRIPTION_ as description,
+        b.deployment_id_
+        from
+        act_re_procdef a,
+        act_ge_bytearray b,
+        act_re_deployment c
+        where a.deployment_id_=c.id_
+        and b.deployment_id_=c.id_
+        and b.generated_=0
+        <if test="processVO.key != null and processVO.key.trim() != ''">
+            and a.key_=#{processVO.key}
+        </if>
+        <if test="processVO.status != null and processVO.status.trim() != ''">
+            and a.suspension_state_  =  #{processVO.status }
+        </if>
+        <if test="processVO.name != null and processVO.name.trim() != ''">
+            and c.name_  like  "%"#{processVO.name }"%"
+        </if>
+        and a.DERIVED_VERSION_=1
+    </select>
+
+
+    <!--根据key查看 已部署的流程定义-->
+    <select id="getlcglxxByKey" resultType="com.sdy.crm.modules.flowable.model.ProcessModel">
+        select
+        a.ID_ as id,
+        a.SUSPENSION_STATE_ as status,
+        a.version_,
+        a.name_,
+        a.key_,
+        a.DERIVED_VERSION_ as derivedVersion,
+        a.DESCRIPTION_ as description
+        from
+        act_re_procdef a
+        WHERE 1=1
+        <if test="processVO.key != null and processVO.key.trim() != ''">
+            AND a.key_=#{processVO.key}
+        </if>
+        <if test="processVO.name != null and processVO.name.trim() != ''">
+            AND a.name_  like  "%"#{processVO.name}"%"
+        </if>
+        <if test="processVO.status != null and processVO.status.trim() != ''">
+            AND a.SUSPENSION_STATE_  =  #{processVO.status}
+        </if>
+    </select>
+
+    <update id="updateProcessXmlString" >
+            update act_ge_bytearray a
+                set BYTES_=#{processVO.xmlString}
+            where a.DEPLOYMENT_ID_=#{processVO.deploymentId}
+        </update>
+
+
+    <update id="updateActReProcdef" >
+            update act_re_procdef a
+                set a.DERIVED_VERSION_=0
+            where a.KEY_=#{actReProcdef.key}
+        </update>
+</mapper>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/vr-base-common/vr-base-common.iml" filepath="$PROJECT_DIR$/vr-base-common/vr-base-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/vr-web-boss/vr-web-boss.iml" filepath="$PROJECT_DIR$/vr-web-boss/vr-web-boss.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xzy-vr-parent.iml" filepath="$PROJECT_DIR$/xzy-vr-parent.iml" />
+    </modules>
+  </component>
+</project>
