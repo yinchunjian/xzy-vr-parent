@@ -16,6 +16,7 @@
 	<modules>
 		<module>vr-base-common</module>
 		<module>vr-web-boss</module>
+        <module>vr-web-app</module>
     </modules>
 
 	<distributionManagement>
