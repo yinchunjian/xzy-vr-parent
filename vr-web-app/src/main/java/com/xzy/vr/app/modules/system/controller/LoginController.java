@@ -60,6 +60,7 @@ public class LoginController {
 		Result<JSONObject> result = new Result<JSONObject>();
 		String username = sysLoginModel.getUsername();
 		String password = sysLoginModel.getPassword();
+		String systemId = sysLoginModel.getSystemId();
 
 		//1. 校验用户是否有效
 		SysUser sysUser = sysUserService.getUserByName(username);
