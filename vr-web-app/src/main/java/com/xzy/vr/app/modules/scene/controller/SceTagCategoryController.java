@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.xzy.vr.app.modules.scene.entity.SceTagCategory;
+import com.xzy.vr.app.modules.scene.entity.SceTagInfo;
 import com.xzy.vr.app.modules.scene.service.ISceTagCategoryService;
+import com.xzy.vr.app.modules.scene.service.ISceTagInfoService;
 import com.xzy.vr.common.api.vo.Result;
 import com.xzy.vr.common.aspect.annotation.AutoLog;
 import com.xzy.vr.common.system.base.controller.JeecgController;
@@ -48,120 +50,28 @@ import io.swagger.annotations.ApiOperation;
 public class SceTagCategoryController extends JeecgController<SceTagCategory, ISceTagCategoryService> {
 	@Autowired
 	private ISceTagCategoryService sceTagCategoryService;
-	
-	/**
-	 * 分页列表查询
-	 *
-	 * @param sceTagCategory
-	 * @param pageNo
-	 * @param pageSize
-	 * @param req
-	 * @return
-	 */
-	@AutoLog(value = "标签分类-分页列表查询")
-	@ApiOperation(value="标签分类-分页列表查询", notes="标签分类-分页列表查询")
-	@GetMapping(value = "/list")
-	public Result<?> queryPageList(SceTagCategory sceTagCategory,
-								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
-								   HttpServletRequest req) {
-		QueryWrapper<SceTagCategory> queryWrapper = QueryGenerator.initQueryWrapper(sceTagCategory, req.getParameterMap());
-		Page<SceTagCategory> page = new Page<SceTagCategory>(pageNo, pageSize);
-		IPage<SceTagCategory> pageList = sceTagCategoryService.page(page, queryWrapper);
-		return Result.ok(pageList);
-	}
-	
-	/**
-	 * 添加
-	 *
-	 * @param sceTagCategory
-	 * @return
-	 */
-	@AutoLog(value = "标签分类-添加")
-	@ApiOperation(value="标签分类-添加", notes="标签分类-添加")
-	@PostMapping(value = "/add")
-	public Result<?> add(@RequestBody SceTagCategory sceTagCategory) {
-		sceTagCategoryService.save(sceTagCategory);
-		return Result.ok("添加成功！");
-	}
-	
-	/**
-	 * 编辑
-	 *
-	 * @param sceTagCategory
-	 * @return
-	 */
-	@AutoLog(value = "标签分类-编辑")
-	@ApiOperation(value="标签分类-编辑", notes="标签分类-编辑")
-	@PutMapping(value = "/edit")
-	public Result<?> edit(@RequestBody SceTagCategory sceTagCategory) {
-		sceTagCategoryService.updateById(sceTagCategory);
-		return Result.ok("编辑成功!");
-	}
-	
-	/**
-	 * 通过id删除
-	 *
-	 * @param id
-	 * @return
-	 */
-	@AutoLog(value = "标签分类-通过id删除")
-	@ApiOperation(value="标签分类-通过id删除", notes="标签分类-通过id删除")
-	@DeleteMapping(value = "/delete")
-	public Result<?> delete(@RequestParam(name="id",required=true) String id) {
-		sceTagCategoryService.removeById(id);
-		return Result.ok("删除成功!");
-	}
-	
-	/**
-	 * 批量删除
-	 *
-	 * @param ids
-	 * @return
-	 */
-	@AutoLog(value = "标签分类-批量删除")
-	@ApiOperation(value="标签分类-批量删除", notes="标签分类-批量删除")
-	@DeleteMapping(value = "/deleteBatch")
-	public Result<?> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
-		this.sceTagCategoryService.removeByIds(Arrays.asList(ids.split(",")));
-		return Result.ok("批量删除成功！");
-	}
-	
-	/**
-	 * 通过id查询
-	 *
-	 * @param id
-	 * @return
-	 */
-	@AutoLog(value = "标签分类-通过id查询")
-	@ApiOperation(value="标签分类-通过id查询", notes="标签分类-通过id查询")
-	@GetMapping(value = "/queryById")
-	public Result<?> queryById(@RequestParam(name="id",required=true) String id) {
-		SceTagCategory sceTagCategory = sceTagCategoryService.getById(id);
-		return Result.ok(sceTagCategory);
-	}
+	 @Autowired
+	 private ISceTagInfoService sceTagInfoService;
 
-  /**
-   * 导出excel
-   *
-   * @param request
-   * @param sceTagCategory
-   */
-  @RequestMapping(value = "/exportXls")
-  public ModelAndView exportXls(HttpServletRequest request, SceTagCategory sceTagCategory) {
-      return super.exportXls(request, sceTagCategory, SceTagCategory.class, "标签分类");
-  }
-
-  /**
-   * 通过excel导入数据
-   *
-   * @param request
-   * @param response
-   * @return
-   */
-  @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
-  public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
-      return super.importExcel(request, response, SceTagCategory.class);
-  }
-
+	 /**
+	  * 标签分类及标签列表查询
+	  * @return
+	  */
+	@AutoLog(value = "标签分类及标签列表查询")
+	@ApiOperation(value="标签分类及标签列表查询", notes="标签分类及标签列表查询")
+	@GetMapping(value = "/queryCategoryTagList")
+	public Result<?> queryCategoryTagList() {
+		QueryWrapper<SceTagCategory> queryWrapper = new QueryWrapper<SceTagCategory>().eq("del_flag",0);
+		List<SceTagCategory> tagCategoryList = sceTagCategoryService.list(queryWrapper);
+		if(null != tagCategoryList && tagCategoryList.size() > 0){
+			for(SceTagCategory tagCategory : tagCategoryList){
+				SceTagInfo tagParam = new SceTagInfo();
+				tagParam.setCategoryId(tagCategory.getCategoryId());
+				tagParam.setDelFlag(0);
+				QueryWrapper<SceTagInfo> tagInfoWrapper = new QueryWrapper<SceTagInfo>(tagParam);
+				tagCategory.setTagInfoList(sceTagInfoService.list(tagInfoWrapper));
+			}
+		}
+		return Result.ok(tagCategoryList);
+	}
 }

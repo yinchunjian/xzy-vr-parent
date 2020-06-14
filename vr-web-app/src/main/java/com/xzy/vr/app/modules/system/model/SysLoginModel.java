@@ -15,6 +15,8 @@ public class SysLoginModel {
     private String username;
 	@ApiModelProperty(value = "密码")
     private String password;
+    @ApiModelProperty(value = "系统ID")
+    private String systemId;
 
     public String getUsername() {
         return username;
@@ -32,4 +34,11 @@ public class SysLoginModel {
         this.password = password;
     }
 
+    public String getSystemId() {
+        return systemId;
+    }
+
+    public void setSystemId(String systemId) {
+        this.systemId = systemId;
+    }
 }

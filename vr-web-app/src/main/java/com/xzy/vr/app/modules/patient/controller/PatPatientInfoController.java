@@ -12,6 +12,7 @@ import com.xzy.vr.common.system.query.QueryGenerator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -33,24 +34,23 @@ import java.util.Arrays;
 public class PatPatientInfoController extends JeecgController<PatPatientInfo, IPatPatientInfoService> {
 	@Autowired
 	private IPatPatientInfoService patPatientInfoService;
-	
-	/**
-	 * 分页列表查询
-	 *
-	 * @param patPatientInfo
-	 * @param pageNo
-	 * @param pageSize
-	 * @param req
-	 * @return
-	 */
+
+	 /**
+	  * 分页列表查询
+	  * @param userNoName
+	  * @param pageNo
+	  * @param pageSize
+	  * @return
+	  */
 	@AutoLog(value = "患者信息-分页列表查询")
 	@ApiOperation(value="患者信息-分页列表查询", notes="患者信息-分页列表查询")
 	@GetMapping(value = "/list")
-	public Result<?> queryPageList(PatPatientInfo patPatientInfo,
+	public Result<?> queryPageList(String userNoName,
 								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
-								   HttpServletRequest req) {
-		QueryWrapper<PatPatientInfo> queryWrapper = QueryGenerator.initQueryWrapper(patPatientInfo, req.getParameterMap());
+								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize) {
+		QueryWrapper<PatPatientInfo> queryWrapper = new QueryWrapper<PatPatientInfo>()
+				.like(StringUtils.isNotEmpty(userNoName),"patient_name",userNoName)
+				.like(StringUtils.isNotEmpty(userNoName),"patient_no",userNoName);
 		Page<PatPatientInfo> page = new Page<PatPatientInfo>(pageNo, pageSize);
 		IPage<PatPatientInfo> pageList = patPatientInfoService.page(page, queryWrapper);
 		return Result.ok(pageList);
@@ -111,7 +111,7 @@ public class PatPatientInfoController extends JeecgController<PatPatientInfo, IP
 		this.patPatientInfoService.removeByIds(Arrays.asList(ids.split(",")));
 		return Result.ok("批量删除成功！");
 	}
-	
+
 	/**
 	 * 通过id查询
 	 *
@@ -125,28 +125,5 @@ public class PatPatientInfoController extends JeecgController<PatPatientInfo, IP
 		PatPatientInfo patPatientInfo = patPatientInfoService.getById(id);
 		return Result.ok(patPatientInfo);
 	}
-
-  /**
-   * 导出excel
-   *
-   * @param request
-   * @param patPatientInfo
-   */
-  @RequestMapping(value = "/exportXls")
-  public ModelAndView exportXls(HttpServletRequest request, PatPatientInfo patPatientInfo) {
-      return super.exportXls(request, patPatientInfo, PatPatientInfo.class, "患者信息");
-  }
-
-  /**
-   * 通过excel导入数据
-   *
-   * @param request
-   * @param response
-   * @return
-   */
-  @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
-  public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
-      return super.importExcel(request, response, PatPatientInfo.class);
-  }
 
 }

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.xzy.vr.app.modules.scene.entity.SceTreatmentScemeInfo;
 import com.xzy.vr.app.modules.scene.service.ISceTreatmentScemeInfoService;
+import com.xzy.vr.app.modules.scene.service.ISceTreatmentScemeVideoService;
 import com.xzy.vr.common.api.vo.Result;
 import com.xzy.vr.common.aspect.annotation.AutoLog;
 import com.xzy.vr.common.system.base.controller.JeecgController;
@@ -48,84 +49,30 @@ import io.swagger.annotations.ApiOperation;
 public class SceTreatmentScemeInfoController extends JeecgController<SceTreatmentScemeInfo, ISceTreatmentScemeInfoService> {
 	@Autowired
 	private ISceTreatmentScemeInfoService sceTreatmentScemeInfoService;
-	
-	/**
-	 * 分页列表查询
-	 *
-	 * @param sceTreatmentScemeInfo
-	 * @param pageNo
-	 * @param pageSize
-	 * @param req
-	 * @return
-	 */
+	 @Autowired
+	 private ISceTreatmentScemeVideoService sceTreatmentScemeVideoService;
+
+	 /**
+	  * 疗法方案-分页列表查询
+	  * @param categoryId
+	  * @param pageNo
+	  * @param pageSize
+	  * @return
+	  */
 	@AutoLog(value = "疗法方案-分页列表查询")
 	@ApiOperation(value="疗法方案-分页列表查询", notes="疗法方案-分页列表查询")
-	@GetMapping(value = "/list")
-	public Result<?> queryPageList(SceTreatmentScemeInfo sceTreatmentScemeInfo,
-								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
-								   HttpServletRequest req) {
-		QueryWrapper<SceTreatmentScemeInfo> queryWrapper = QueryGenerator.initQueryWrapper(sceTreatmentScemeInfo, req.getParameterMap());
+	@GetMapping(value = "/queryPageList")
+	public Result<?> queryPageList(@RequestParam(name="categoryId",required=true) String categoryId,@RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
+								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize) {
+		QueryWrapper<SceTreatmentScemeInfo> queryWrapper = new QueryWrapper<SceTreatmentScemeInfo>();
+		queryWrapper.eq("category_id",categoryId);
+		queryWrapper.eq("del_flag",0);
 		Page<SceTreatmentScemeInfo> page = new Page<SceTreatmentScemeInfo>(pageNo, pageSize);
 		IPage<SceTreatmentScemeInfo> pageList = sceTreatmentScemeInfoService.page(page, queryWrapper);
 		return Result.ok(pageList);
 	}
 	
-	/**
-	 * 添加
-	 *
-	 * @param sceTreatmentScemeInfo
-	 * @return
-	 */
-	@AutoLog(value = "疗法方案-添加")
-	@ApiOperation(value="疗法方案-添加", notes="疗法方案-添加")
-	@PostMapping(value = "/add")
-	public Result<?> add(@RequestBody SceTreatmentScemeInfo sceTreatmentScemeInfo) {
-		sceTreatmentScemeInfoService.save(sceTreatmentScemeInfo);
-		return Result.ok("添加成功！");
-	}
-	
-	/**
-	 * 编辑
-	 *
-	 * @param sceTreatmentScemeInfo
-	 * @return
-	 */
-	@AutoLog(value = "疗法方案-编辑")
-	@ApiOperation(value="疗法方案-编辑", notes="疗法方案-编辑")
-	@PutMapping(value = "/edit")
-	public Result<?> edit(@RequestBody SceTreatmentScemeInfo sceTreatmentScemeInfo) {
-		sceTreatmentScemeInfoService.updateById(sceTreatmentScemeInfo);
-		return Result.ok("编辑成功!");
-	}
-	
-	/**
-	 * 通过id删除
-	 *
-	 * @param id
-	 * @return
-	 */
-	@AutoLog(value = "疗法方案-通过id删除")
-	@ApiOperation(value="疗法方案-通过id删除", notes="疗法方案-通过id删除")
-	@DeleteMapping(value = "/delete")
-	public Result<?> delete(@RequestParam(name="id",required=true) String id) {
-		sceTreatmentScemeInfoService.removeById(id);
-		return Result.ok("删除成功!");
-	}
-	
-	/**
-	 * 批量删除
-	 *
-	 * @param ids
-	 * @return
-	 */
-	@AutoLog(value = "疗法方案-批量删除")
-	@ApiOperation(value="疗法方案-批量删除", notes="疗法方案-批量删除")
-	@DeleteMapping(value = "/deleteBatch")
-	public Result<?> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
-		this.sceTreatmentScemeInfoService.removeByIds(Arrays.asList(ids.split(",")));
-		return Result.ok("批量删除成功！");
-	}
+
 	
 	/**
 	 * 通过id查询
@@ -141,27 +88,5 @@ public class SceTreatmentScemeInfoController extends JeecgController<SceTreatmen
 		return Result.ok(sceTreatmentScemeInfo);
 	}
 
-  /**
-   * 导出excel
-   *
-   * @param request
-   * @param sceTreatmentScemeInfo
-   */
-  @RequestMapping(value = "/exportXls")
-  public ModelAndView exportXls(HttpServletRequest request, SceTreatmentScemeInfo sceTreatmentScemeInfo) {
-      return super.exportXls(request, sceTreatmentScemeInfo, SceTreatmentScemeInfo.class, "疗法方案");
-  }
-
-  /**
-   * 通过excel导入数据
-   *
-   * @param request
-   * @param response
-   * @return
-   */
-  @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
-  public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
-      return super.importExcel(request, response, SceTreatmentScemeInfo.class);
-  }
 
 }
