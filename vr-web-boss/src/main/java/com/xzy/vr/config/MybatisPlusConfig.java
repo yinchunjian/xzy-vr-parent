@@ -11,7 +11,7 @@ import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
  *
  */
 @Configuration
-@MapperScan(value={"com.sdy.crm.modules.**.mapper*"})
+@MapperScan(value={"com.xzy.vr.modules.**.mapper*"})
 public class MybatisPlusConfig {
 
     /**

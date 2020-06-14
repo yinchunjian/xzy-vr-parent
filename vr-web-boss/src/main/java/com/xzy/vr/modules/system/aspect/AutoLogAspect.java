@@ -39,7 +39,7 @@ public class AutoLogAspect {
 	@Autowired
 	private ISysLogService sysLogService;
 	
-	@Pointcut("@annotation(com.sdy.crm.common.aspect.annotation.AutoLog)")
+	@Pointcut("@annotation(com.xzy.vr.common.aspect.annotation.AutoLog)")
 	public void logPointCut() { 
 		
 	}

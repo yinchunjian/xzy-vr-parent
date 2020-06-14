@@ -9,9 +9,9 @@ import com.xzy.vr.common.util.oConvertUtils;
 public enum SendMsgTypeEnum {
 
 //推送方式：1短信 2邮件 3微信
-	SMS("1", "com.sdy.crm.modules.message.handle.impl.SmsSendMsgHandle"),
-	EMAIL("2", "com.sdy.crm.modules.message.handle.impl.EmailSendMsgHandle"),
-	WX("3","com.sdy.crm.modules.message.handle.impl.WxSendMsgHandle");
+	SMS("1", "com.xzy.vr.modules.message.handle.impl.SmsSendMsgHandle"),
+	EMAIL("2", "com.xzy.vr.modules.message.handle.impl.EmailSendMsgHandle"),
+	WX("3","com.xzy.vr.modules.message.handle.impl.WxSendMsgHandle");
 
 	private String type;
 

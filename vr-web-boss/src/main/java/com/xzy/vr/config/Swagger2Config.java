@@ -60,7 +60,7 @@ public class Swagger2Config implements WebMvcConfigurer {
 				.apiInfo(apiInfo())
 				.select()
 				//此包路径下的类，才生成接口文档
-				.apis(RequestHandlerSelectors.basePackage("com.sdy.crm.modules"))
+				.apis(RequestHandlerSelectors.basePackage("com.xzy.vr.modules"))
 				//加了ApiOperation注解的类，才生成接口文档
 	            .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
 				.paths(PathSelectors.any())

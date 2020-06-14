@@ -52,7 +52,7 @@ public class PermissionDataAspect {
 	@Autowired
 	private ISysUserService sysUserService;
 	
-	@Pointcut("@annotation(com.sdy.crm.common.aspect.annotation.PermissionData)")
+	@Pointcut("@annotation(com.xzy.vr.common.aspect.annotation.PermissionData)")
 	public void pointCut() {
 		
 	}
