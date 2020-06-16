@@ -10,42 +10,21 @@
     
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
-      
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="备注">
-          <a-input placeholder="请输入备注" v-decorator="['remark', {}]" />
+
+
+        <a-form-item label="所属机构/医院">
+          <a-select v-decorator="['hospitalId', {}]" style="width: 120px" @change="changeHospital">
+            <a-select-option v-for="item in hospitalList" :value="item.hospitalId">{{item.hospitalName}}</a-select-option>
+          </a-select>
         </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="删除标识0-正常,1-已删除">
-          <a-input placeholder="请输入删除标识0-正常,1-已删除" v-decorator="['delFlag', {}]" />
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="医院id">
-          <a-input placeholder="请输入医院id" v-decorator="['hospitalId', {}]" />
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="医院名称">
-          <a-input placeholder="请输入医院名称" v-decorator="['hospitalName', {}]" />
-        </a-form-item>
+
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="科室id">
-          <a-input placeholder="请输入科室id" v-decorator="['departmentId', {}]" />
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="科室名称">
-          <a-input placeholder="请输入科室名称" v-decorator="['departmentName', {}]" />
+          <a-select v-decorator="['departmentId', {}]" style="width: 120px" @change="changeHospital">
+            <a-select-option v-for="item in departList" :value="item.departmentId">{{item.departmentName}}</a-select-option>
+          </a-select>
         </a-form-item>
         <a-form-item
           :labelCol="labelCol"
@@ -53,6 +32,7 @@
           label="VR室名称">
           <a-input placeholder="请输入VR室名称" v-decorator="['roomName', {}]" />
         </a-form-item>
+
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
@@ -68,17 +48,25 @@
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
-          label="是否登录验证 1、是 0、否">
-          <a-input placeholder="请输入是否登录验证 1、是 0、否" v-decorator="['loginCheck', {}]" />
+          label="是否登录验证">
+          <a-select placeholder="请选择是否登录验证" v-decorator="['loginCheck', {}]" style="width: 120px" @change="changeHospital">
+            <a-select-option  value="1">是</a-select-option>
+            <a-select-option  value="0">否</a-select-option>
+          </a-select>
         </a-form-item>
-		
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="备注">
+          <a-input placeholder="请输入备注" v-decorator="['remark', {}]" />
+        </a-form-item>
       </a-form>
     </a-spin>
   </a-modal>
 </template>
 
 <script>
-  import { httpAction } from '@/api/manage'
+  import { httpAction ,getAction} from '@/api/manage'
   import pick from 'lodash.pick'
   import moment from "moment"
 
@@ -105,10 +93,18 @@
         url: {
           add: "/system/sysVrRoomInfo/add",
           edit: "/system/sysVrRoomInfo/edit",
+          hospitalList:"/system/sysHospitalInfo/list",
+          departList:"/system/sysDepartMentInfo/list"
         },
+        hospitalList:[],
+        departList:[]
       }
     },
     created () {
+      this.$nextTick(() =>{
+        this.loadHospitalList();
+        this.loadDepartList();
+      })
     },
     methods: {
       add () {
@@ -167,7 +163,27 @@
       handleCancel () {
         this.close()
       },
+      changeHospital(value){
 
+      },
+      loadHospitalList(){
+        var that = this;
+        getAction(this.url.hospitalList,{}).then((res)=>{
+          if(res.success){
+            that.hospitalList = res.result;
+
+          }
+        })
+      },
+      loadDepartList(){
+        var that = this;
+        getAction(this.url.departList,{}).then((res)=>{
+          if(res.success){
+            that.departList = res.result;
+
+          }
+        })
+      }
 
     }
   }

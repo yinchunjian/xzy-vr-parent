@@ -7,40 +7,15 @@
         <a-row :gutter="24">
 
           <a-col :md="6" :sm="8">
-            <a-form-item label="备注">
-              <a-input placeholder="请输入备注" v-model="queryParam.remark"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="8">
-            <a-form-item label="删除标识0-正常,1-已删除">
-              <a-input placeholder="请输入删除标识0-正常,1-已删除" v-model="queryParam.delFlag"></a-input>
-            </a-form-item>
-          </a-col>
-        <template v-if="toggleSearchStatus">
-        <a-col :md="6" :sm="8">
-            <a-form-item label="医院编码">
-              <a-input placeholder="请输入医院编码" v-model="queryParam.hospitalNo"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="8">
             <a-form-item label="医院名称">
               <a-input placeholder="请输入医院名称" v-model="queryParam.hospitalName"></a-input>
             </a-form-item>
           </a-col>
-          <a-col :md="6" :sm="8">
-            <a-form-item label="医院照片">
-              <a-input placeholder="请输入医院照片" v-model="queryParam.hospitalLogo"></a-input>
-            </a-form-item>
-          </a-col>
-          </template>
+
           <a-col :md="6" :sm="8" >
             <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
               <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
               <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px">重置</a-button>
-              <a @click="handleToggleSearch" style="margin-left: 8px">
-                {{ toggleSearchStatus ? '收起' : '展开' }}
-                <a-icon :type="toggleSearchStatus ? 'up' : 'down'"/>
-              </a>
             </span>
           </a-col>
 
@@ -51,10 +26,6 @@
     <!-- 操作按钮区域 -->
     <div class="table-operator">
       <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
-      <a-button type="primary" icon="download" @click="handleExportXls('sys_hospital_info')">导出</a-button>
-      <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl" @change="handleImportExcel">
-        <a-button type="primary" icon="import">导入</a-button>
-      </a-upload>
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <a-menu slot="overlay">
           <a-menu-item key="1" @click="batchDel"><a-icon type="delete"/>删除</a-menu-item>
@@ -123,7 +94,7 @@
         // 表头
         columns: [
           {
-            title: '#',
+            title: '序号',
             dataIndex: '',
             key:'rowIndex',
             width:60,
@@ -131,16 +102,6 @@
             customRender:function (t,r,index) {
               return parseInt(index)+1;
             }
-           },
-		   {
-            title: '备注',
-            align:"center",
-            dataIndex: 'remark'
-           },
-		   {
-            title: '删除标识0-正常,1-已删除',
-            align:"center",
-            dataIndex: 'delFlag'
            },
 		   {
             title: '医院编码',
@@ -152,30 +113,15 @@
             align:"center",
             dataIndex: 'hospitalName'
            },
-		   {
-            title: '医院照片',
+          {
+            title: '开通系统',
             align:"center",
-            dataIndex: 'hospitalLogo'
-           },
+            dataIndex: 'systemName'
+          },
 		   {
-            title: '省份ID',
+            title: '所在省份',
             align:"center",
             dataIndex: 'provinceId'
-           },
-		   {
-            title: '城市ID',
-            align:"center",
-            dataIndex: 'cityId'
-           },
-		   {
-            title: '区县标识ID',
-            align:"center",
-            dataIndex: 'countyId'
-           },
-		   {
-            title: '医院地址',
-            align:"center",
-            dataIndex: 'hospitalAddress'
            },
 		   {
             title: '联系人',
@@ -183,7 +129,7 @@
             dataIndex: 'contactPerson'
            },
 		   {
-            title: '联系人手机号',
+            title: '联系方式',
             align:"center",
             dataIndex: 'contactMobile'
            },

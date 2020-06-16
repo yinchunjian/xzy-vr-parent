@@ -1,41 +1,20 @@
 <template>
-  <a-card :bordered="false">
+  <a-card :bordered="false" class="LRAllCard">
 
     <!-- 查询区域 -->
     <div class="table-page-search-wrapper">
       <a-form layout="inline" @keyup.enter.native="searchQuery">
         <a-row :gutter="24">
-
           <a-col :md="6" :sm="8">
-            <a-form-item label="备注">
-              <a-input placeholder="请输入备注" v-model="queryParam.remark"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="8">
-            <a-form-item label="删除标识0-正常,1-已删除">
-              <a-input placeholder="请输入删除标识0-正常,1-已删除" v-model="queryParam.delFlag"></a-input>
-            </a-form-item>
-          </a-col>
-        <template v-if="toggleSearchStatus">
-        <a-col :md="6" :sm="8">
             <a-form-item label="系统名称">
-              <a-input placeholder="请输入系统名称" v-model="queryParam.systemName"></a-input>
+              <j-input placeholder="请输入系统名称" v-model="queryParam.username"></j-input>
             </a-form-item>
           </a-col>
-          <a-col :md="6" :sm="8">
-            <a-form-item label="系统介绍">
-              <a-input placeholder="请输入系统介绍" v-model="queryParam.systemIntr"></a-input>
-            </a-form-item>
-          </a-col>
-          </template>
+
           <a-col :md="6" :sm="8" >
             <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
               <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
               <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px">重置</a-button>
-              <a @click="handleToggleSearch" style="margin-left: 8px">
-                {{ toggleSearchStatus ? '收起' : '展开' }}
-                <a-icon :type="toggleSearchStatus ? 'up' : 'down'"/>
-              </a>
             </span>
           </a-col>
 
@@ -46,10 +25,6 @@
     <!-- 操作按钮区域 -->
     <div class="table-operator">
       <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
-      <a-button type="primary" icon="download" @click="handleExportXls('sys_system_info')">导出</a-button>
-      <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl" @change="handleImportExcel">
-        <a-button type="primary" icon="import">导入</a-button>
-      </a-upload>
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <a-menu slot="overlay">
           <a-menu-item key="1" @click="batchDel"><a-icon type="delete"/>删除</a-menu-item>
@@ -105,12 +80,13 @@
 <script>
   import SysSystemInfoModal from './modules/SysSystemInfoModal'
   import { JeecgListMixin } from '@/mixins/JeecgListMixin'
-
+  import JInput from '@/components/jeecg/JInput'
   export default {
     name: "SysSystemInfoList",
     mixins:[JeecgListMixin],
     components: {
-      SysSystemInfoModal
+      SysSystemInfoModal,
+      JInput
     },
     data () {
       return {
@@ -118,7 +94,7 @@
         // 表头
         columns: [
           {
-            title: '#',
+            title: '序号',
             dataIndex: '',
             key:'rowIndex',
             width:60,
@@ -128,25 +104,25 @@
             }
            },
 		   {
-            title: '备注',
-            align:"center",
-            dataIndex: 'remark'
-           },
-		   {
-            title: '删除标识0-正常,1-已删除',
-            align:"center",
-            dataIndex: 'delFlag'
-           },
-		   {
             title: '系统名称',
             align:"center",
             dataIndex: 'systemName'
            },
 		   {
-            title: '系统介绍',
+            title: '系统功能介绍',
             align:"center",
             dataIndex: 'systemIntr'
            },
+          {
+            title: '创建时间',
+            align:"center",
+            dataIndex: 'createTime'
+          },
+          {
+            title: '创建人',
+            align:"center",
+            dataIndex: 'creater'
+          },
           {
             title: '操作',
             dataIndex: 'action',
@@ -155,7 +131,7 @@
           }
         ],
 		url: {
-          list: "/system/sysSystemInfo/list",
+          list: "/system/sysSystemInfo/page",
           delete: "/system/sysSystemInfo/delete",
           deleteBatch: "/system/sysSystemInfo/deleteBatch",
           exportXlsUrl: "system/sysSystemInfo/exportXls",

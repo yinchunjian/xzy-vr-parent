@@ -11,18 +11,7 @@
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
       
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="备注">
-          <a-input placeholder="请输入备注" v-decorator="['remark', {}]" />
-        </a-form-item>
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="删除标识0-正常,1-已删除">
-          <a-input placeholder="请输入删除标识0-正常,1-已删除" v-decorator="['delFlag', {}]" />
-        </a-form-item>
+
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
@@ -33,9 +22,14 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="系统介绍">
-          <a-input placeholder="请输入系统介绍" v-decorator="['systemIntr', {}]" />
+          <a-input type="textarea" :rows="4" placeholder="请输入系统介绍" v-decorator="['systemIntr', {}]" />
         </a-form-item>
-		
+        <a-form-item
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          label="备注">
+          <a-input placeholder="请输入备注" v-decorator="['remark', {}]" />
+        </a-form-item>
       </a-form>
     </a-spin>
   </a-modal>
@@ -83,7 +77,7 @@
         this.model = Object.assign({}, record);
         this.visible = true;
         this.$nextTick(() => {
-          this.form.setFieldsValue(pick(this.model,'remark','delFlag','systemName','systemIntr'))
+          this.form.setFieldsValue(pick(this.model,'remark','systemName','systemIntr'))
 		  //时间格式化
         });
 

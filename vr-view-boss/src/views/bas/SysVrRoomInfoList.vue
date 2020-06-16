@@ -7,40 +7,22 @@
         <a-row :gutter="24">
 
           <a-col :md="6" :sm="8">
-            <a-form-item label="备注">
-              <a-input placeholder="请输入备注" v-model="queryParam.remark"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="8">
-            <a-form-item label="删除标识0-正常,1-已删除">
-              <a-input placeholder="请输入删除标识0-正常,1-已删除" v-model="queryParam.delFlag"></a-input>
-            </a-form-item>
-          </a-col>
-        <template v-if="toggleSearchStatus">
-        <a-col :md="6" :sm="8">
-            <a-form-item label="医院id">
-              <a-input placeholder="请输入医院id" v-model="queryParam.hospitalId"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="8">
-            <a-form-item label="医院名称">
-              <a-input placeholder="请输入医院名称" v-model="queryParam.hospitalName"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="8">
             <a-form-item label="科室id">
-              <a-input placeholder="请输入科室id" v-model="queryParam.departmentId"></a-input>
+              <a-input placeholder="请输入科室id" v-model="queryParam.roomName"></a-input>
             </a-form-item>
           </a-col>
-          </template>
+          <a-col :md="6" :sm="8">
+            <a-form-item label="所属机构/医院">
+              <a-select v-model="queryParam.hospitalId" style="width: 120px">
+                <a-select-option v-for="item in hospitalList" :value="item.hospitalId">{{item.hospitalName}}</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
           <a-col :md="6" :sm="8" >
             <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
               <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
               <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px">重置</a-button>
-              <a @click="handleToggleSearch" style="margin-left: 8px">
-                {{ toggleSearchStatus ? '收起' : '展开' }}
-                <a-icon :type="toggleSearchStatus ? 'up' : 'down'"/>
-              </a>
+
             </span>
           </a-col>
 
@@ -110,6 +92,7 @@
 <script>
   import SysVrRoomInfoModal from './modules/SysVrRoomInfoModal'
   import { JeecgListMixin } from '@/mixins/JeecgListMixin'
+  import { httpAction ,getAction} from '@/api/manage'
 
   export default {
     name: "SysVrRoomInfoList",
@@ -195,16 +178,31 @@
           deleteBatch: "/system/sysVrRoomInfo/deleteBatch",
           exportXlsUrl: "system/sysVrRoomInfo/exportXls",
           importExcelUrl: "system/sysVrRoomInfo/importExcel",
+          hospital:"/system/sysHospitalInfo/list"
        },
+        hospitalList:[]
     }
   },
-  computed: {
+    created() {
+      this.$nextTick(() =>{
+        this.loadHospitalList()
+      });
+    },
+    computed: {
     importExcelUrl: function(){
       return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`;
     }
   },
     methods: {
-     
+      loadHospitalList(){
+        var that = this;
+        getAction(this.url.hospital,{}).then((res)=>{
+          if(res.success){
+            that.hospitalList = res.result;
+
+          }
+        })
+      }
     }
   }
 </script>
