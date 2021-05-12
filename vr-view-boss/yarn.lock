@@ -1602,9 +1602,9 @@ ansi-styles@^4.0.0, ansi-styles@^4.1.0:
     "@types/color-name" "^1.1.1"
     color-convert "^2.0.1"
 
-ant-design-vue@^1.5.2:
+ant-design-vue@1.5.2:
   version "1.5.2"
-  resolved "https://registry.npmjs.org/ant-design-vue/-/ant-design-vue-1.5.2.tgz#0943f17d7908de16e633da7ab7133fb856eedd2c"
+  resolved "https://registry.yarnpkg.com/ant-design-vue/-/ant-design-vue-1.5.2.tgz#0943f17d7908de16e633da7ab7133fb856eedd2c"
   integrity sha512-DmlOl+ld4hSQdEG1c2wAV+v9/Bl2aG+wBEnd1GJYV0LeOXaSrBGiIkZrmUrTrUL92yBdFO+OF25aFNb0UFMZOA==
   dependencies:
     "@ant-design/icons" "^2.1.1"
@@ -3196,10 +3196,10 @@ code-point-at@^1.0.0:
   resolved "https://registry.npmjs.org/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
   integrity sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=
 
-codemirror@^5.46.0:
-  version "5.52.0"
-  resolved "https://registry.npmjs.org/codemirror/-/codemirror-5.52.0.tgz#4dbd6aef7f0e63db826b9a23922f0c03ac75c0a7"
-  integrity sha512-K2UB6zjscrfME03HeRe/IuOmCeqNpw7PLKGHThYpLbZEuKf+ZoujJPhxZN4hHJS1O7QyzEsV7JJZGxuQWVaFCg==
+codemirror@^5.58.2:
+  version "5.58.2"
+  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.58.2.tgz#ed54a1796de1498688bea1cdd4e9eeb187565d1b"
+  integrity sha512-K/hOh24cCwRutd1Mk3uLtjWzNISOkm4fvXiMO7LucCrqbh6aJDdtqUziim3MZUI6wOY0rvY1SlL1Ork01uMy6w==
 
 collection-visit@^1.0.0:
   version "1.0.0"
