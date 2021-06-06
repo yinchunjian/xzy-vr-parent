@@ -1602,9 +1602,9 @@ ansi-styles@^4.0.0, ansi-styles@^4.1.0:
     "@types/color-name" "^1.1.1"
     color-convert "^2.0.1"
 
-ant-design-vue@^1.5.2:
+ant-design-vue@1.5.2:
   version "1.5.2"
-  resolved "https://registry.npmjs.org/ant-design-vue/-/ant-design-vue-1.5.2.tgz#0943f17d7908de16e633da7ab7133fb856eedd2c"
+  resolved "https://registry.yarnpkg.com/ant-design-vue/-/ant-design-vue-1.5.2.tgz#0943f17d7908de16e633da7ab7133fb856eedd2c"
   integrity sha512-DmlOl+ld4hSQdEG1c2wAV+v9/Bl2aG+wBEnd1GJYV0LeOXaSrBGiIkZrmUrTrUL92yBdFO+OF25aFNb0UFMZOA==
   dependencies:
     "@ant-design/icons" "^2.1.1"
@@ -1792,7 +1792,7 @@ async-each@^1.0.1:
 
 async-limiter@~1.0.0:
   version "1.0.1"
-  resolved "https://registry.npmjs.org/async-limiter/-/async-limiter-1.0.1.tgz#dd379e94f0db8310b08291f9d64c3209766617fd"
+  resolved "https://registry.yarnpkg.com/async-limiter/-/async-limiter-1.0.1.tgz#dd379e94f0db8310b08291f9d64c3209766617fd"
   integrity sha512-csOlWGAcRFJaI6m+F2WKdnMKr4HhdhFVBk0H/QbJFMCr+uO2kwohwXQPxw/9OCxp05r5ghVBFSyioixx3gfkNQ==
 
 async-validator@^3.0.3:
@@ -11597,9 +11597,9 @@ write@^0.2.1:
     mkdirp "^0.5.1"
 
 ws@^6.0.0, ws@^6.2.1:
-  version "6.2.1"
-  resolved "https://registry.npmjs.org/ws/-/ws-6.2.1.tgz#442fdf0a47ed64f59b6a5d8ff130f4748ed524fb"
-  integrity sha512-GIyAXC2cB7LjvpgMt9EKS2ldqr0MTrORaleiOno6TweZ6r3TKtoFQWay/2PceJ3RuBasOHzXNn5Lrw1X0bEjqA==
+  version "6.2.2"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-6.2.2.tgz#dd5cdbd57a9979916097652d78f1cc5faea0c32e"
+  integrity sha512-zmhltoSR8u1cnDsD43TX59mzoMZsLKqUweyYBAIvTngR3shc0W6aOZylZmq/7hqyVxPdi+5Ud2QInblgyE72fw==
   dependencies:
     async-limiter "~1.0.0"
 
